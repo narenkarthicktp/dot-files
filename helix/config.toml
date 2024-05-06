@@ -1,0 +1,13 @@
+theme = "monokai"
+
+[editor]
+bufferline = "multiple"
+
+[keys.normal]
+esc = ["collapse_selection", "keep_primary_selection"]
+"C-/" = "toggle_comments"
+
+[editor.cursor-shape]
+insert = "bar"
+
+

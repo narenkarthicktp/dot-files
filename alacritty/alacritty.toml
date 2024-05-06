@@ -1,0 +1,18 @@
+
+import = [
+  "~/.config/commons/monkai.toml"
+]
+
+[window]
+
+padding.x = 10
+padding.y = 20
+
+opacity = 0.75
+
+[font]
+
+size = 8
+normal.family = "Iosevka SS09"
+offset.y = 8
+

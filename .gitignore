@@ -1,0 +1,11 @@
+*/
+
+!alacritty/
+!bash/
+!commons/
+!gtk-3.0/
+!helix/
+!htop/
+!picom/
+!qtile/
+!xinit/
