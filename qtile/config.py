@@ -5,12 +5,10 @@ from libqtile.lazy import lazy
 from tomllib import load
 
 from style import bubble
-from bindings import keys, groups, mouse
+from bindings import keys, groups, mouse, TERMINAL
 
 # TODO:
-# - scratchpads
-# - systray is empty and idk why
-# - spacing between widgets would be nice
+# - scratchpads / floating layouts
 
 # COLORS
 
@@ -35,7 +33,7 @@ layouts = [
 # WIDGETS
 
 widget_defaults = dict(
-    font="Iosevka SS09",
+    font="IosevkaSS09 Nerd Font",
     fontsize=14,
     padding=5,
     foreground=colors["primary"]["foreground"]
@@ -69,16 +67,46 @@ screens = [
                 widget.Notify(),
                 *bubble(
                     {
-                        widget.Backlight: {"fmt": "\uF522 {}", "backlight_name": "intel_backlight", "step": 5},
-                        widget.PulseVolume: {"fmt": "\uF028 {}"}, # 
+                        widget.Wlan: {
+                            "interface": "wlp0s20f3",
+                            "format": "\U0000F1EB {essid} [{percent:2.0%}]",
+                            "disconnected_message": '\U000F092E',
+                            "mouse_callbacks": {
+                                "Button1": lazy.spawn(f"{TERMINAL} --title {TERMINAL}-nmtui -e nmtui")
+                            }
+                        },
+                        widget.Bluetooth: { # Welcome to my mess
+                            "default_show_battery": True,
+                            "default_text"    : "\U000F00AF {connected_devices}",
+                            "adapter_format"  : "{powered} {name} {discovery}",
+                            "device_format"   : "{symbol} {name}",
+                            "symbol_discovery": ('', ''), # This is just complicating everything
+                            "symbol_powered"  : ('\U0000F293', '\U000F00B2'), #  󰂲
+                            "symbol_unknown"  : '\U0000F29C', # 
+                            "symbol_connected": '\U000F00B1', # 󰂱
+                            "symbol_paired"   : '\U0000F294'  # 
+                        }
+                    },
+                    background=colors["primary"]["background"]
+                ),
+                *bubble(
+                    {
+                        widget.Backlight: {"fmt": "\U0000F522 {}", "backlight_name": "intel_backlight", "step": 5}, # 
+                        widget.PulseVolume: {"fmt": "\U000F057E {}"}, # 󰕾
                         # widget.BatteryIcon: {"theme_path": "~/.config/qtile/battery/", "scale": 1.25},
                         widget.Battery: {
-                            "full_char"     : '\uF240', # 
-                            "empty_char"    : '\uF244', # 
-                            "charge_char"   : '\uF0E7', # 
-                            "discharge_char": '\uF242', # 
+                            "full_char"     : '\U000F0079', # 󰁹
+                            "empty_char"    : '\U000F008E', # 󰁺
+                            "charge_char"   : '\U000F140B', # 󱐋
+                            "discharge_char": '\U000F0080', # 󰂀
                             "format": "{char} {percent:2.0%}",
-                            "notify_below": 15
+                            "show_short_text": False,
+                            
+                            "low_foreground": colors["normal"]["red"],
+                            "low_background": colors["primary"]["background"],
+                            "low_percentage": 0.2,
+                            "notification_timeout": 0,
+                            "notify_below": 20
                         }
                     },
                     background=colors["primary"]["background"]
@@ -94,7 +122,7 @@ screens = [
             # border_color = ["#00000000", "#00000000", "#00000000", "#00000000"],
             border_width=[0, 10, 4, 10]  # [T, R, B, L]
         ),
-        wallpaper="~/Downloads/the-range.png",
+        wallpaper="~/Pictures/wallpapers/the-range.png",
         wallpaper_mode="fill",
 
         # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
@@ -119,12 +147,14 @@ floating_layout = layout.Floating(
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
-        Match(wm_class="confirmreset"),  # gitk
-        Match(wm_class="makebranch"),  # gitk
-        Match(wm_class="maketag"),  # gitk
+        Match(wm_class="confirmreset"), # gitk
+        Match(wm_class="makebranch"),   # gitk
+        Match(wm_class="maketag"),      # gitk
         Match(wm_class="ssh-askpass"),  # ssh-askpass
-        Match(title="branchdialog"),  # gitk
-        Match(title="pinentry"),  # GPG key password entry
+        Match(title="branchdialog"),    # gitk
+        Match(title="pinentry"),        # GPG key password entry
+
+        Match(title=f"{TERMINAL}-nmtui")
     ]
 )
 auto_fullscreen = True
@@ -154,5 +184,5 @@ wmname = "LG3D"
 def change_group_icon():
 
     for i in range(6):
-        qtile.groups[i].label = '\u2B58' # ⭘
-    qtile.current_group.label = '\uEBB4' # 
+        qtile.groups[i].label = '\U00002B58' # ⭘
+    qtile.current_group.label = '\U0000EBB4' # 
