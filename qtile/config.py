@@ -60,11 +60,11 @@ screens = [
                     },
                     background=colors["primary"]["background"]
                 ),
-                widget.Prompt(),
+                widget.Prompt(max_history=10, ignore_dups_history=True, cursorblink=0),
                 widget.WindowName(padding=20),
 
                 widget.Systray(),
-                widget.Notify(),
+                widget.Notify(audiofile="/home/nktp/Downloads/pika.wav"),
                 *bubble(
                     {
                         widget.Wlan: {

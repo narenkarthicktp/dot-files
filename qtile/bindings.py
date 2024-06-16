@@ -67,6 +67,9 @@ keys = [
     Key([], "XF86AudioRaiseVolume", lazy.widget["pulsevolume"].increase_vol()),
     Key([], "XF86AudioLowerVolume", lazy.widget["pulsevolume"].decrease_vol()),
     Key([], "XF86AudioMute", lazy.widget["pulsevolume"].mute()),
+    Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause")),
+    Key([], "XF86AudioNext", lazy.spawn("playerctl next")),
+    Key([], "XF86AudioPrev", lazy.spawn("playerctl previous")),
 
     Key([], "Print", lazy.spawn("/home/nktp/.config/commons/hacknshoot.sh")),
     Key([ALT], "Print", lazy.spawn("/home/nktp/.config/commons/hacknshoot.sh -s")),
@@ -78,7 +81,7 @@ keys = [
 
     Key([SUPER], "Return", lazy.spawn(TERMINAL),
         desc="Launch terminal"),
-    Key([SUPER], "r", lazy.spawncmd(),
+    Key([SUPER], "semicolon", lazy.spawncmd(),
         desc="Spawn a command using a prompt widget"),
 
     Key([SUPER, "control"], "r", lazy.reload_config(),

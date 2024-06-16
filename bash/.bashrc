@@ -48,3 +48,6 @@ extend_prompt()
 }
 
 PS1='╭──[\u@\h]-[\W]$(extend_prompt)\n╰────\$ '
+
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+

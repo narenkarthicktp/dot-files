@@ -1,6 +1,6 @@
 
 import = [
-  "~/.config/commons/monkai.toml"
+  "~/.config/commons/monokai.toml"
 ]
 
 [window]
