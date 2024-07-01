@@ -1,0 +1,93 @@
+file_watch_support = false
+snippet_support = true
+verbosity = 2
+
+[server]
+# exit session if no requests were received during given period in seconds
+# set to 0 to disable
+timeout = 1800 # seconds = 30 minutes
+
+[language_server.clangd]
+filetypes = ["c", "cpp"]
+roots = ["compile_commands.json", ".clangd", ".git", ".hg"]
+command = "clangd"
+
+[language_server.html-language-server]
+filetypes = ["html"]
+roots = ["package.json"]
+command = "vscode-html-language-server"
+args = ["--stdio"]
+settings_section = "_"
+[language_server.html-language-server.settings._]
+# quotePreference = "single"
+# javascript.format.semicolons = "insert"
+
+[language_server.pylsp]
+filetypes = ["python"]
+roots = ["requirements.txt", "setup.py", ".git", ".hg"]
+command = "pylsp"
+settings_section = "_"
+[language_server.pylsp.settings._]
+# See https://github.com/python-lsp/python-lsp-server#configuration
+# pylsp.configurationSources = ["flake8"]
+pylsp.plugins.jedi_completion.include_params = true
+
+# [language_server.pyright]
+# filetypes = ["python"]
+# roots = ["requirements.txt", "setup.py", "pyrightconfig.json", ".git", ".hg"]
+# command = "pyright-langserver"
+# args = ["--stdio"]
+
+# [language_server.ruff]
+# filetypes = ["python"]
+# roots = ["requirements.txt", "setup.py", ".git", ".hg"]
+# command = "ruff-lsp"
+# settings_section = "_"
+# [language_server.ruff.settings._.globalSettings]
+# organizeImports = true
+# fixAll = true
+
+[language_server.rust-analyzer]
+filetypes = ["rust"]
+roots = ["Cargo.toml"]
+command = "sh"
+args = [
+    "-c",
+    """
+        if path=$(rustup which rust-analyzer 2>/dev/null); then
+            exec "$path"
+        else
+            exec rust-analyzer
+        fi
+    """,
+]
+[language_server.rust-analyzer.settings.rust-analyzer]
+# See https://rust-analyzer.github.io/manual.html#configuration
+# cargo.features = []
+check.command = "clippy"
+
+[language_server.typescript-language-server]
+filetypes = ["javascript", "typescript"]
+roots = ["package.json", "tsconfig.json", "jsconfig.json", ".git", ".hg"]
+command = "typescript-language-server"
+args = ["--stdio"]
+settings_section = "_"
+[language_server.typescript-language-server.settings._]
+# quotePreference = "double"
+# typescript.format.semicolons = "insert"
+
+[semantic_tokens]
+faces = [
+    {face="documentation", token="comment", modifiers=["documentation"]},
+    {face="comment", token="comment"},
+    {face="function", token="function"},
+    {face="keyword", token="keyword"},
+    {face="module", token="namespace"},
+    {face="operator", token="operator"},
+    {face="string", token="string"},
+    {face="type", token="type"},
+    {face="default+d", token="variable", modifiers=["readonly"]},
+    {face="default+d", token="variable", modifiers=["constant"]},
+    {face="variable", token="variable"},
+]
+

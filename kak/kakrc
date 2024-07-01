@@ -1,0 +1,102 @@
+# PLUGINS
+
+source "%val{config}/plugins/plug.kak/rc/plug.kak"
+plug "andreyorst/plug.kak" noload
+
+plug "andreyorst/fzf.kak" config %{
+    require-module fzf
+    require-module fzf-grep
+    require-module fzf-file
+# } defer fzf %{
+#     set-option global fzf_highlight_command "cat"
+# } defer fzf-file %{
+#     set-option global fzf_file_command "fd . --no-ignore-vcs"
+# } defer fzf-grep %{
+#     set-option global fzf_grep_command "fd"
+}
+plug "kak-lsp/kak-lsp" do %{
+    cargo install --locked --force --path .
+
+    mkdir -p ~/.config/kak-lsp
+    cp -n kak-lsp.toml ~/.config/kak-lsp/
+}
+
+# MAPPING / ALIAS
+
+alias global bc  delete-buffer
+alias global bc! delete-buffer!
+
+unalias global db  delete-buffer
+unalias global db! delete-buffer!
+
+map global normal <c-/> :comment-line<ret>
+map global normal <c-?> :comment-block<ret>
+map global normal <esc> ";," # collapse selections/multiple-cursors
+
+map -docstring "next buffer" global goto n <esc>:buffer-next<ret>
+map -docstring "prev buffer" global goto p <esc>:buffer-previous<ret>
+
+map -docstring "yank the selection into the clipboard" global user y "<a-|> xclip -i -selection clipboard<ret>"
+map -docstring "paste the clipboard" global user p "<a-!> xclip -o -selection clipboard<ret>"
+
+map -docstring "open FZF" global user f :fzf-mode<ret>
+map -docstring "open LSP" global user l :enter-user-mode<space>lsp<ret>
+
+# HOOKS
+
+# hook global InsertCompletionShow .* %{
+#   try %{
+#     # this command temporarily removes cursors preceded by whitespace;
+#     # if there are no cursors left, it raises an error, does not
+#     # continue to execute the mapping commands, and the error is eaten
+#     # by the `try` command so no warning appears.
+#     execute-keys -draft 'h<a-K>\h<ret>'
+#     map window insert <tab> <c-n>
+#     map window insert <s-tab> <c-p>
+#     hook -once -always window InsertCompletionHide .* %{
+#         unmap window insert <tab> <c-n>
+#         unmap window insert <s-tab> <c-p>
+#     }
+#   }
+# }
+
+lsp-enable
+lsp-inlay-diagnostics-enable global
+
+hook global WinSetOption filetype=c %{
+  hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
+  hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
+  hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
+  hook -once -always window WinSetOption filetype=.* %{
+    remove-hooks window semantic-tokens
+  }
+}
+hook global WinSetOption filetype=python %{
+  hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
+  hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
+  hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
+  hook -once -always window WinSetOption filetype=.* %{
+    remove-hooks window semantic-tokens
+  }
+}
+hook global WinSetOption filetype=javascript %{
+  hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
+  hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
+  hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
+  hook -once -always window WinSetOption filetype=.* %{
+    remove-hooks window semantic-tokens
+  }
+}
+# PREFERENCES
+
+set-option global ui_options terminal_assistant=off
+set-option global scrolloff 3,10
+set-option global indentwidth 4
+set-option global tabstop 4
+
+add-highlighter global/ number-lines -hlcursor -separator "  " -min-digits 5
+add-highlighter global/ show-whitespaces -spc ' ' -lf ' '
+add-highlighter global/ show-matching
+
+colorscheme monokai
+

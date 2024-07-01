@@ -6,6 +6,12 @@
 !gtk-3.0/
 !helix/
 !htop/
+!kak/
+!kak/colors
+!kak-lsp/
 !picom/
 !qtile/
 !xinit/
+
+kak/.fzf-projects
+kak/plugins/
