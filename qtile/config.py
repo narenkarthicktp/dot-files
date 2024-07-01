@@ -64,7 +64,7 @@ screens = [
                 widget.WindowName(padding=20),
 
                 widget.Systray(),
-                widget.Notify(audiofile="/home/nktp/Downloads/pika.wav"),
+                widget.Notify(audiofile="/home/nktp/Media/audio/pika.wav"),
                 *bubble(
                     {
                         widget.Wlan: {
@@ -122,7 +122,7 @@ screens = [
             # border_color = ["#00000000", "#00000000", "#00000000", "#00000000"],
             border_width=[0, 10, 4, 10]  # [T, R, B, L]
         ),
-        wallpaper="~/Pictures/wallpapers/the-range.png",
+        wallpaper="~/Media/wallpapers/the-range.png",
         wallpaper_mode="fill",
 
         # You can uncomment this variable if you see that on X11 floating resize/moving is laggy

@@ -8,7 +8,7 @@ if [ $# -gt 0 ]; then
   if [ $1 = '-s' ]; then
     case $# in
       2)shotgun $selection "$2";;
-      1)shotgun $selection "/home/nktp/Pictures/screenshots/SS$(date +%d-%m-%YT%R:%S).png";;
+      1)shotgun $selection "/home/nktp/Media/screenshots/SS$(date +%d-%m-%YT%R:%S).png";;
     esac
   fi
 else
